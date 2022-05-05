@@ -1,0 +1,277 @@
+* {
+    box-sizing: border-box;
+    margin-top: 0;
+    margin-bottom: 0;
+    outline: none;
+}
+
+html {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+}
+
+p {
+    padding-top: 1rem;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    min-width: 320px;
+    font-family: 'Open Sans', sans-serif;
+    /* background-color: blue; */
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+/* Header */
+
+.navbar {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+/* @media (min-width: 768px) { */
+    .navbar .navbar-nav {
+        display: inline-block;
+        float: none;
+        vertical-align: center;
+        height: 8rem;
+        background-color: white;
+    }
+
+    .navbar .navbar-brand {
+        text-align: center;
+    }
+    
+    .navbar .navbar-collapse {
+        text-align: center;
+    }
+/* } */
+
+.card{
+    border-radius: 0px;
+}
+ .btn{
+     border-radius: 0px;
+ }
+
+.navbar-brand {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    max-width: 80rem;
+    left: 0;
+    text-align: center;
+    margin:0 auto;
+}
+
+.img-fluid {
+    max-height: 8rem;
+}
+
+/* !Header */
+
+.button--green {
+    display: inline-block;
+    border-radius: 0px;
+    border: 1px solid #3b8070;
+    color: #3b8070;
+    text-decoration: none;
+    padding: 10px 30px;
+}
+
+.button--green:hover {
+    color: #fff;
+    background-color: #3b8070;
+}
+
+.button--blue {
+    display: inline-block;
+    border-radius: 0px;
+    border: 1px solid #2e4ea2;
+    color: #2e4ea2;
+    text-decoration: none;
+    padding: 10px 30px;
+}
+
+.button--blue:hover {
+    color: #fff;
+    background-color: #2e4ea2;
+}
+
+.button--grey {
+    display: inline-block;
+    border-radius: 4px;
+    border: 1px solid #35495e;
+    color: #35495e;
+    text-decoration: none;
+    padding: 10px 30px;
+    margin-left: 15px;
+}
+
+.button--grey:hover {
+    color: #fff;
+    background-color: #35495e;
+}
+
+/* Formulaire */
+
+span {
+    display: inline-block;
+}
+
+select {
+    width: auto;
+    /* padding: 2px 4px;
+    padding-right: 25px;
+    height: 2rem; */
+}
+
+ul li {
+    padding: 2px 0;
+}
+
+.liste-deroulante {
+    display: inline-block;
+    width: auto;
+}
+
+.bloc {
+    display: inline-block;
+    width: 100px;
+}
+
+.text-trois-car {
+    display: inline-block;
+    width: 75px;
+}
+
+.text-cinq-car {
+    display: inline-block;
+    width: 90px;
+}
+
+.text {
+    display: inline-block;
+    width: 350px;
+}
+
+.derniermodif {
+    color: orange;
+}
+
+#error {
+    color: red;
+    padding: 10px 0;
+}
+
+.div-attestation {
+    padding: 20px;
+}
+
+.noPadding{
+    padding: 0 !important;
+}
+
+.custom-box {
+    min-height: 66vh;
+    border-left: 1px solid rgba(173,173,173,0.5);
+}
+
+.plainStacked {
+    margin-top: 22px;
+  }
+
+/* !Formulaire */
+
+/* Mes interventions */
+
+img.img-icon {
+    max-height: 2rem;
+    cursor: pointer;
+    position:relative;
+    top: -0.25rem;
+}
+
+h1, h2 {
+    color: #4546A1;
+}
+
+/* !Mes interventions */
+
+
+/* Accordion  */
+
+.accordionBtn{
+    text-align: left;
+  }
+  
+  .accordionBtn:focus {
+    box-shadow: none;
+  }
+  
+  .accordion-chevron{
+    position: relative;
+    top: 5px;
+  
+    -webkit-transition: 0.4s ease-in-out;
+    -moz-transition: 0.4s ease-in-out;
+    -o-transition: 0.4s ease-in-out;
+    transition: 0.4s ease-in-out;
+    color: #252195;
+  }
+  
+  a:not(.collapsed) .accordion-chevron{
+    -webkit-transform: rotate(90deg);
+    transform:rotate(90deg);
+    -moz-transform:rotate(90deg);
+  
+  }
+
+.form-group[required="required"] label:after {
+content:"*";color:red;
+}
+
+
+.btn .material-icons{
+    position: relative;
+    top: 2px;
+   }
+
+/* Bootstrap override */
+
+.btn-primary{
+    background-color: #252195 !important;
+    border: 1px solid #252195;
+}
+
+.btn-outline-primary:hover{
+    background-color: #252195 !important;
+
+}
+
+.btn-outline-primary{
+    border: 1px solid #252195;
+    color: #252195;
+}
+
+.toastLink{
+    color: #FDB842 !important; 
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}

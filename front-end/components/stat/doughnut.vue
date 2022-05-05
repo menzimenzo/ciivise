@@ -1,0 +1,40 @@
+
+<script>
+import Vue from "vue";
+import { mapState } from "vuex";
+import { Doughnut } from "vue-chartjs";
+
+export default {
+  extends: Doughnut,
+  props: {
+    chartdata: {
+      type: Object,
+      default: null
+    },
+    options: {
+      type: Object,
+      default: null
+    }
+  },
+  watch: {
+    chartdata: function() {
+      // the callback will be called immediately after the start of the observation
+      this.renderChart(this.chartdata, this.options);
+    }
+  },
+  mounted() {
+    this.renderChart(this.chartdata, this.options);
+  }
+};
+</script>
+
+<style>
+.interventionModal {
+  padding: 30px;
+}
+.modal-btns {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+</style>
