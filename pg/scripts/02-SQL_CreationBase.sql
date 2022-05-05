@@ -33,6 +33,43 @@ drop table IF EXISTS INT_ENF CASCADE;
 drop table IF EXISTS USER_SESSIONS CASCADE;
 
 /*==============================================================*/
+/* Table : TEMOIGNAGE                                           */
+/*==============================================================*/
+create table temoignage (
+   ID                   SERIAL               not null,
+   CODE_B               VARCHAR              not null,
+   CODE_F               VARCHAR              not null,
+   STATUT               INT                  not null,
+   constraint PK_TEMOIGNAGE primary key (ID)
+);
+
+/*==============================================================*/
+/* Table : MESSAGES                                             */
+/*==============================================================*/
+create table messages (
+   ID                   SERIAL               not null,
+   TEM_ID               BIGINT               not null,
+   DATE_CREATE          DATE                 not null,
+   CONTENT              TEXT                 not null,
+   IV                   BYTEA                not null,
+   SENTBYADMIN          BOOLEAN              not null,
+   constraint PK_MESSAGES primary key (ID)
+);
+
+/*==============================================================*/
+/* Table : EVENTS                                                */
+/*==============================================================*/
+create table events (
+   ID                   SERIAL               not null,
+   DATE_CREATE          TEXT                 not null,
+   USER_ID              INT                  not null,
+   LIBELLE              TEXT                 not null,
+   OBJET                JSON                not null,
+   constraint PK_EVENTS primary key (ID)
+);
+
+
+/*==============================================================*/
 /* Table : ATTESTATION                                          */
 /*==============================================================*/
 create table ATTESTATION (

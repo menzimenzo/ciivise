@@ -17,8 +17,8 @@ router.post('/adminaveccle', async function (req, res) {
     return pgPool.query(`SELECT tem.id AS id,mes.content AS content, tem.code_b AS code,tem.code_f AS codefront, 
         to_char(mes.date_create,'DD/MM/YYYY HH24:MI') AS date, mes.id AS mes_id
         FROM temoignage tem
-        JOIN message mes on mes.tem_id = tem.id
-        WHERE tem.id NOT IN (SELECT dos.tem_id FROM dossier dos)
+        JOIN messages mes on mes.tem_id = tem.id
+        WHERE tem.statut = 0
         ORDER BY date asc`,
         [],
         (err, result) => {
@@ -30,7 +30,7 @@ router.post('/adminaveccle', async function (req, res) {
                 const temoignages = result.rows;
                 temoignages.forEach(element => {
                     try {
-                        element.code = decryptText(element.code,file).toString()
+                        element.code = decryptText(Buffer(element.code,'base64'),file).toString()
                     }
                     catch {
                         element.code = 'XXX'
@@ -80,7 +80,7 @@ router.post('/details/', async function (req, res) {
     pgPool.query(`SELECT tem.id AS id,mes.content AS content, code_f AS code,to_char(mes.date_create,'DD/MM/YYYY HH24:MI') AS date, mes.sentbyadmin AS admin,
                 mes.iv AS iv, mes.id as mes_id
                 FROM temoignage tem
-                JOIN message mes ON mes.tem_id = tem.id
+                JOIN messages mes ON mes.tem_id = tem.id
                 WHERE code_f = $1
                 ORDER BY date asc`, [$1 = hashCode], (err, result) => {
         if (err) {
@@ -122,13 +122,14 @@ router.post('/', async function (req, res) {
         encrypted += cipher.final('hex');
 
         // Chiffrement de la clé Utilisateur via la clé publique
-        const encryptedCode = encryptText(code)
-
+        //const encryptedCode = encryptText(code)/toString
+        const encryptedCode = encryptText(code).toString("base64")   
+        
         // Hachage du code
         const hashCode = crypto.createHash('md5').update(code).digest('hex');
 
         // insertion des données en base
-        const requeteTem = `INSERT INTO temoignage (code_f,code_b) values($1,$2) RETURNING *`;
+        const requeteTem = `INSERT INTO temoignage (code_f,code_b,statut) values($1,$2,0) RETURNING *`;
         log.d('::post - 1ere requete', { requeteTem });
         return pgPool.query(requeteTem, [ hashCode, encryptedCode], async (err, result) => {
             if (err) {
@@ -137,7 +138,7 @@ router.post('/', async function (req, res) {
             }
             else {
                 const id = result.rows[0].id
-                const requeteMes = `INSERT INTO message (tem_id,content,iv, date_create,sentbyadmin) values($1,$2,$3,NOW(),$4)`;
+                const requeteMes = `INSERT INTO messages (tem_id,content,iv, date_create,sentbyadmin) values($1,$2,$3,NOW(),$4)`;
                 log.d('::post - 2eme requete', { requeteMes });
                 return pgPool.query(requeteMes, [ id, encrypted,iv, admin], async (err, result) => {
                     if (err) {
@@ -180,7 +181,7 @@ router.post('/admin/', async function (req, res) {
         encrypted += cipher.final('hex');
 
         // insertion des données en base
-        const requete = `INSERT INTO message (tem_id,content,iv,date_create,sentbyadmin) values($1,$2,$3,NOW(),$4)`;
+        const requete = `INSERT INTO messages (tem_id,content,iv,date_create,sentbyadmin) values($1,$2,$3,NOW(),$4)`;
         log.d('::post by adminUser - requete', { requete });
         return pgPool.query(requete, [id, encrypted, iv,admin], (err, result) => {
             if (err) {
