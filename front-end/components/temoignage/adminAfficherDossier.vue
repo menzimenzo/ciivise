@@ -11,14 +11,12 @@
           <b-form-select
             id="typologieInput"
             v-model="typologie"
-            required
             name="typologieInput"
-            v-validate="{ required: true }"
           >
           <option
             v-for="typologie in listTypologie"
             :key="typologie.id"
-            :value="typologie.id"
+            :value="typologie"
           >
           {{typologie.libelle}}</option>
           </b-form-select>
@@ -35,10 +33,9 @@
         >
           <b-form-select
             id="ancienneteInput"
-            v-model="anciennete"
+            v-model="temoignage.anciennete"
             required
             name="ancienneteInput"
-            v-validate="{ required: true }"
           >
             <option>TEST</option>
             <option>AUTRE</option>
@@ -56,17 +53,15 @@
         >
           <b-form-select
             id="etatInput"
-            v-model="statut "
-            required
+            v-model="statut"
             name="etatInput"
-            v-validate="{ required: true }"
           >
           <option
             v-for="statut in listStatut"
             :key="statut.id"
             :value="statut.id"
           >
-          {{statut.libelle}}</option>
+          {{listStatut[statut.id].libelle}}</option>
           </b-form-select>
         </b-form-group>
       </b-col>
@@ -89,47 +84,33 @@ const log = logger("components:AdminAfficherDossier");
 
 export default {
   props: {
-    temoignage: null,
+    temoignage: [],
+    listStatut: [],
+    listTypologie: [],
   },
   data() {
     return {
       typologie: null,
       anciennete: null,
       statut: null,
-      listTypologie: [
-        {"id" : 1, "libelle": "Demande d'audition"},
-        {"id" : 2, "libelle": "Témoignage écrit"},
-        {"id" : 3, "libelle": "Famille"},
-        {"id" : 4, "libelle": "Institutions"},
-        {"id" : 5, "libelle": "Autres"},
-      ],
-      listStatut: [
-        {"id" : 0, "libelle": "Nouveau"},
-        {"id" : 1, "libelle": "Terminé"},
-        {"id" : 2, "libelle": "Refusé"},
-      ]
     };
-  },
-  watch: {
-    /*"temoignagedechiffres[0].id": function () {
-      this.typologie = null;
-      this.anciennete = null;
-    },*/
   },
   methods: {
     majDossier: async function () {
       log.i("majDossier - In");
       const url = process.env.API_URL + "/temoignage/admin/"+this.temoignage[0].id;
+      console.log('url : '+url)
+      console.log(this.typologie)
       return this.$axios
         .$put(url, {
-          typologie: this.typologie,
+          typologie: this.typologie.id,
           anciennete: this.anciennete,
           statut: this.statut,
         })
-        .then((result) => {
+        .then(() => {
           log.i("majDossier - Done");
-          //this.temoignage = result
-          this.reponse = "";
+          this.typologie = null;
+          this.statut = null;
           this.$emit('dossier',true)
           return this.$toast.success("Le dossier a bien été mis à jour");
         })

@@ -1,32 +1,31 @@
 <template>
   <b-container fluid class="admin">
-        <b-card-body>
+    <b-card-body>
       <b-row class="menu">
-        <b-col cols="1"  >
+        <b-col cols="1">
           <span class="libelle">Etat :</span>
         </b-col>
-        <b-col cols="2" >
-            <b-form-select
-              id="etatInput"
-              v-model="statut "
-              name="etatInput"
-              class="champ"
+        <b-col cols="2">
+          <b-form-select
+            id="etatInput"
+            v-model="statut"
+            name="etatInput"
+            class="champ"
+          >
+            <option :value="-1">Tous</option>
+            <option
+              v-for="statut in listStatut"
+              :key="statut.id"
+              :value="statut.id"
             >
-              <option :value=null>Tous</option>
-              <option
-                v-for="statut in listStatut"
-                :key="statut.id"
-                :value="statut.id"
-              >
-                {{statut.libelle}}
-              </option>
-            </b-form-select>
+              {{ statut.libelle }}
+            </option>
+          </b-form-select>
         </b-col>
-        <b-col cols="1"  >
+        <b-col cols="1">
           <span class="libelle">Numéro :</span>
         </b-col>
-        <b-col cols="2" >
-     
+        <b-col cols="2">
           <b-form-input
             id="numeroInput"
             v-model="numero"
@@ -34,80 +33,82 @@
             placeholder="numéro de dossier"
           />
         </b-col>
-        
       </b-row>
       <b-row>
-        <br>
+        <br />
       </b-row>
       <b-row>
         <b-col cols="12">
-              <editable
-                :columns="headers"
-                :data="filteredTemoignages"
-                :removable="false"
-                :creable="false"
-                :editable="false"
-                :defaultSortField="{ key: 'nom', order: 'asc' }"
+          <editable
+            :columns="headers"
+            :data="filteredTemoignages"
+            :removable="false"
+            :creable="false"
+            :editable="false"
+            :defaultSortField="{ key: 'nom', order: 'asc' }"
+          >
+            <template slot-scope="props" slot="actions">
+              <b-btn
+                v-if="!affichageTemoignage && props.data.item.code != 'XXX'"
+                @click="afficherTemoignage(props.data.item.code)"
+                size="sm"
+                class="mr-1"
+                variant="primary"
               >
-                <template slot-scope="props" slot="actions">
-                  <b-btn
-                    v-if="!affichageTemoignage && props.data.item.code != 'XXX'"
-                    @click="afficherTemoignage(props.data.item.code)"
-                    size="sm"
-                    class="mr-1"
-                    variant="primary"
-                  >
-                    <i class="material-icons">visibility</i>
-                  </b-btn>
-                  <b-btn
-                    v-if="affichageTemoignage"
-                    @click="masquerTemoignage(props.data.item.code)"
-                    size="sm"
-                    class="mr-1"
-                    variant="primary"
-                  >
-                    <i class="material-icons">visibility_off</i>
-                  </b-btn>
-                  <b-btn
-                    v-if="props.data.item.code != 'XXX'"
-                    @click="
-                      CreerDossier(props.data.item.id, props.data.item.code)
-                    "
-                    size="sm"
-                    class="mr-1"
-                    variant="primary"
-                  >
-                    <i class="material-icons">done</i>
-                  </b-btn>
-                  <b-btn
-                    v-if="props.data.item.code != 'XXX'"
-                    @click="CloreTemoignage(props.data.item.id)"
-                    size="sm"
-                    class="mr-1"
-                    variant="primary"
-                  >
-                    <i class="material-icons">close</i>
-                  </b-btn>
-                </template>
-              </editable>
+                <i class="material-icons">visibility</i>
+              </b-btn>
+              <b-btn
+                v-if="affichageTemoignage"
+                @click="masquerTemoignage(props.data.item.code)"
+                size="sm"
+                class="mr-1"
+                variant="primary"
+              >
+                <i class="material-icons">visibility_off</i>
+              </b-btn>
+              <b-btn
+                v-if="props.data.item.code != 'XXX'"
+                @click="CreerDossier(props.data.item.id, props.data.item.code)"
+                size="sm"
+                class="mr-1"
+                variant="primary"
+              >
+                <i class="material-icons">done</i>
+              </b-btn>
+              <b-btn
+                v-if="props.data.item.code != 'XXX'"
+                @click="CloreTemoignage(props.data.item.id)"
+                size="sm"
+                class="mr-1"
+                variant="primary"
+              >
+                <i class="material-icons">close</i>
+              </b-btn>
+            </template>
+          </editable>
         </b-col>
       </b-row>
-          <div v-show="affichageTemoignage">
-            <b-row>
-              <b-col cols="8">
-                <Temoignage
-                  :temoignages="temoignagedechiffres"
-                  @reponse="recupMessage"
-                  @dossier="masquerTemoignage"
-                />
-              </b-col>
-              <b-col cols="4">
-                <div class="suivi" v-show="temoignagedechiffres">
-                  <Dossier :temoignage="temoignagedechiffres"  @dossier="masquerTemoignage" />
-                </div>
-              </b-col>
-            </b-row>
-          </div>
+      <div v-show="affichageTemoignage">
+        <b-row>
+          <b-col cols="8">
+            <Temoignage
+              :temoignages="temoignagedechiffres"
+              @reponse="recupMessage"
+              @dossier="masquerTemoignage"
+            />
+          </b-col>
+          <b-col cols="4">
+            <div class="suivi" v-show="temoignagedechiffres">
+              <Dossier
+                :temoignage="temoignagedechiffres"
+                :listStatut="listStatut"
+                :listTypologie="listTypologie"
+                @dossier="masquerTemoignage"
+              />
+            </div>
+          </b-col>
+        </b-row>
+      </div>
     </b-card-body>
   </b-container>
 </template>
@@ -154,52 +155,50 @@ export default {
       temoignagedechiffres: [],
       affichageTemoignage: false,
       listStatut: [],
-      statut: 0,
+      listTypologie: [],
+      statut: -1,
       numero: null,
     };
   },
   async mounted() {
     log.i("mounted - In");
-    await this.recupStatuts();
     await this.recupTemoignages();
+    this.listStatut = await this.recupReferentiel("statut");
+    this.listTypologie = await this.recupReferentiel("typologie");
+
     log.d("mounted - Done");
   },
   computed: {
-    filteredTemoignages: function() {
-      //log.i('filteredTemoignages - In')
-      if (this.statut || this.numero) {
-      return this.temoignagesToDisplay.filter(tem => {
+    filteredTemoignages: function () {
+      log.i("filteredTemoignages - In");
+      return this.temoignagesToDisplay.filter((tem) => {
         var isMatch = true;
-        if (this.statut ) {
-          isMatch = isMatch &&  tem.statut_libelle == this.statut
+        if (this.statut > -1) {
+          isMatch = isMatch && tem.statut_id == this.statut;
         }
-        if (this.numero ) {
-          isMatch = isMatch &&  tem.id.toString().indexOf(this.numero) > -1
-       }
-        log.d('filteredTemoignages - Done', { isMatch })
+        if (this.numero) {
+          
+          isMatch = isMatch && tem.id.toString().indexOf(this.numero) > -1;
+        }
+        log.d("filteredTemoignages - Done", { isMatch });
         return isMatch;
-      })
-      }
-      else {
-        return this.temoignagesToDisplay
-      }
-
-    }
+      });
+    },
   },
   methods: {
-    recupStatuts: function () {
-      log.i("recupStatuts - In");
-      const url = process.env.API_URL + "/statut/";
+    recupReferentiel: function (table) {
+      log.i("recupReferentiel " + table + " - In");
+      const url = process.env.API_URL + "/referentiel/" + table;
       return this.$axios
         .$get(url, {})
         .then((response) => {
-          this.listStatut = response.statuts;
-          log.d("recupStatuts - Done");
+          log.d("recupReferentiel " + table + " - Done");
+          return response;
         })
         .catch((error) => {
-          log.w("recupStatuts - error", error);
+          log.w("recupReferentiel " + table + " - error", error);
           return this.$toast.error(
-            "Une erreur est survenue lors de la récupération des statuts de dossier"
+            "Une erreur est survenue lors de la récupération du référentiel ${{table}}"
           );
         });
     },
@@ -235,7 +234,6 @@ export default {
                   "La clé personnelle chargée ne permet pas de décrypter les données"
                 );
               }
-              console.log(this.temoignagesToDisplay);
               log.d("recupTemoignages - Done");
             }
           })
@@ -253,7 +251,7 @@ export default {
             log.d("recupTemoignages - Done");
             if (response.temoignages) {
               this.temoignages = response.temoignages;
-              this.temoignagesToDisplay = [];
+              this.temoignagesToDisplay = [];null
               this.codeToDisplay = [];
               // on elimine les codes déjà présents
               this.temoignages.forEach((element) => {
@@ -287,6 +285,8 @@ export default {
             this.temoignagesToDisplay = this.temoignagesToDisplay.filter(
               (c) => c.code === code
             );
+            console.log('this.temoignagedechiffres')
+            console.log(this.temoignagedechiffres)
             this.affichageTemoignage = true;
           }
           log.d("afficherTemoignage - Done");
@@ -299,7 +299,7 @@ export default {
         });
     },
     masquerTemoignage: function (code) {
-      console.log('dedans')
+      console.log("dedans");
       this.affichageTemoignage = false;
       this.recupTemoignages();
     },

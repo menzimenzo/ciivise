@@ -38,7 +38,6 @@ router.post('/kadmin', async function (req, res) {
                         element.erreur= true
                     }
                 })
-                console.log(temoignages)
                 log.i('::list temoignage en attente avec clé- Done '+temoignages.length)
                 return res.status(200).json({ temoignages: temoignages });
             }

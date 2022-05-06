@@ -79,6 +79,15 @@ create table STATUT (
    constraint PK_STATUT primary key (ID)
 );
 
+/*==============================================================*/
+/* Table : TYPOLOGIE                                           */
+/*==============================================================*/
+create table TYPOLOGIE (
+   ID                   INT                  not null,
+   LIBELLE              VARCHAR(20)          not null,
+   constraint PK_TYPOLOGIE primary key (ID)
+);
+
 
 /*==============================================================*/
 /* Table : ATTESTATION                                          */
