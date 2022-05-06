@@ -40,6 +40,8 @@ create table temoignage (
    CODE_B               VARCHAR              not null,
    CODE_F               VARCHAR              not null,
    STATUT               INT                  not null,
+   TYPOLOGIE            VARCHAR(20)          null,
+   ANCIENNETE           VARCHAR(20)          null,
    constraint PK_TEMOIGNAGE primary key (ID)
 );
 
@@ -66,6 +68,15 @@ create table events (
    LIBELLE              TEXT                 not null,
    OBJET                JSON                not null,
    constraint PK_EVENTS primary key (ID)
+);
+
+/*==============================================================*/
+/* Table : STATUT                                               */
+/*==============================================================*/
+create table STATUT (
+   ID                   INT                  not null,
+   LIBELLE              VARCHAR(10)          not null,
+   constraint PK_STATUT primary key (ID)
 );
 
 

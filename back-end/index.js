@@ -65,6 +65,7 @@ const insee     = require('./routes/insee');
 const ecole     = require('./routes/ecole');
 const structureref         = require('./routes/structureref');
 const temoignage         = require('./routes/temoignage');
+const statut         = require('./routes/statut');
 
 // Route vers la page de connexion
 app.use(config.URL_PREFIX + '/connexion', connexion);
@@ -102,6 +103,8 @@ app.use(config.URL_PREFIX + '/demandeaaq', demandeaaq);
 app.use(config.URL_PREFIX + '/structureref', structureref);
 
 app.use(config.URL_PREFIX + '/temoignage', temoignage);
+
+app.use(config.URL_PREFIX + '/statut', statut);
 
 app.get(config.URL_PREFIX + '', function (req, res) {
     res.send('Bienvenue sur le backend de la Ciivise');
